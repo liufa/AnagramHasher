@@ -104,7 +104,7 @@ namespace AnagramHasher.Core
             {
                 var anagrams = GetAnagrams(filteredDictionary, i);
 
-                foreach (var hash in MatchedHashes(GetPermutationsAndHashes(anagrams)))
+                foreach (var hash in GetPermutationsAndHashes(anagrams))
                 {
                     if (!matches.ContainsKey(hash.Key))
                     {
@@ -139,12 +139,6 @@ namespace AnagramHasher.Core
             });
 
             return container;
-        }
-
-        public Dictionary<string, string> MatchedHashes(Dictionary<string, string> anagrams)
-        {
-            return anagrams.Where(o => _hashesToLookFor.Contains(o.Value))
-                .ToDictionary(o => o.Key, o => o.Value);
         }
     }
 }

@@ -52,17 +52,9 @@ namespace AnagramHasherTests
            //Normally every test should be run in isolation and order shouldn't matter, however since anagram search is quite expensive pragmatism takes over and I am reusing operations.
            //var filteredDictionary = Processor.GetFilteredWords(Processor.ReadDictionary(pathToDictionary));
            var anagrams = Processor.GetAnagrams(_dictionary,2);
-           var orderedInput = Processor.AnagramToCompare.WithoutSpaces().ToCharArray().OrderBy(o => o);
-           Assert.True(anagrams.TrueForAll(o=>new string(o.ToCharArray().OrderBy(oo => oo).ToArray()) == new string(orderedInput.ToArray())));
+           var orderedInput = new string(Processor.AnagramToCompare.ToCharArray().OrderBy(o => o).ToArray());
+            Assert.True(anagrams.TrueForAll(o=>new string(o.ToCharArray().OrderBy(oo => oo).ToArray()).TrimStart() == orderedInput));
            _anagrams = anagrams;
-        }
-
-        [Test, Order(3)]
-        public void GetPermutations()
-        {
-            var permutations = Processor.GetPermutationsAndHashes(_anagrams);
-            Assert.True(_anagrams.Count*6 == permutations.Count);
-            _permutations = permutations;
         }
 
         [Test]
