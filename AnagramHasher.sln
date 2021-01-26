@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnagramHasher", "AnagramHasher\AnagramHasher.csproj", "{EC60147D-7C43-44B2-BC96-773E3364EBF2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnagramHasher", "AnagramHasher\AnagramHasher.csproj", "{EC60147D-7C43-44B2-BC96-773E3364EBF2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnagramHasherTests", "AnagramHasherTests\AnagramHasherTests.csproj", "{219B5E89-6FAD-4BA9-88D0-2E4967483F0E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnagramHasherTests", "AnagramHasherTests\AnagramHasherTests.csproj", "{219B5E89-6FAD-4BA9-88D0-2E4967483F0E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnagramHasher.Core", "AnagramHasher.Core\AnagramHasher.Core.csproj", "{843872C9-F617-4069-9C09-30D3B617B0DC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnagramHasher.Core", "AnagramHasher.Core\AnagramHasher.Core.csproj", "{843872C9-F617-4069-9C09-30D3B617B0DC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{27443110-27EA-43A2-A459-CAFDFF906D3E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

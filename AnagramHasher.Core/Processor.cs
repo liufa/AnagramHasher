@@ -31,9 +31,14 @@ namespace AnagramHasher.Core
 
         public IEnumerable<string> FilterBySymbolsContained(IEnumerable<string> dictionary)
         {
-            var result = dictionary.ToList().Where(o => o.ToCharArray().ToList().Supersect(AnagramToCompare.ToCharArray().ToList()).Count() == o.Length)
+            var result = dictionary.ToList().Where(o => o.Supersect(AnagramToCompare).Count() == o.Length)
                 .ToList();
             return result;
+        }
+
+        public IEnumerable<string> FilterBySymbolsContained(string path)
+        {
+            return FilterBySymbolsContained(ReadDictionary(path));
         }
 
         public IEnumerable<string> GetFilteredWords(IEnumerable<string> dictionary)
@@ -68,7 +73,7 @@ namespace AnagramHasher.Core
             {
                 var word = dictionary.ElementAt(i);
                 if (anagram.Split(" ").Length <= depth 
-                    && !anagram.Split(" ").Contains(word) && word.ToCharArray().ToList().Supersect(AnagramToCompare.ExceptAll(anagram.WithoutSpaces()).ToList())
+                    && !anagram.Split(" ").Contains(word) && word.Supersect(new string(AnagramToCompare.ExceptAll(anagram.WithoutSpaces()).ToArray()))
                         .Count() == word.Length)
                 {
                     anagram += $" {word}";
@@ -91,11 +96,11 @@ namespace AnagramHasher.Core
             }
         }
 
-        public Dictionary<string, string> SearchIncreasingDepth(IEnumerable<string> filteredDictionary)
+        public  Dictionary<string, string> SearchIncreasingDepth(IEnumerable<string> filteredDictionary)
         {
             var matches = new Dictionary<string, string>();
             var i = 2;
-            while (matches.Count < 3 && i < _anagram.WithoutSpaces().Length)
+            while (matches.Count < 3 && i < 3) //This should be _anagram.WithoutSpaces().Length but to actually do 18 "words" and permutations one needs to parallelise in a cloud.
             {
                 var anagrams = GetAnagrams(filteredDictionary, i);
 
@@ -104,6 +109,7 @@ namespace AnagramHasher.Core
                     if (!matches.ContainsKey(hash.Key))
                     {
                         matches.Add(hash.Key, hash.Value);
+                        Console.WriteLine($"{hash.Key}, {hash.Value}");
                     }
                 }
 
@@ -117,7 +123,7 @@ namespace AnagramHasher.Core
         {
             var md5 = MD5.Create();
             var container = new Dictionary<string, string>();
-            Parallel.ForEach(anagrams, (anagram,state,i) =>
+            Parallel.ForEach(anagrams, (anagram) =>
             {
                 var splitAnagram = anagram.Split(new[] {' '}, StringSplitOptions.None);
                 Parallel.ForEach(splitAnagram.Permutations(), (permutation) =>

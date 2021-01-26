@@ -13,9 +13,10 @@ namespace AnagramHasher.Core
             return str.Replace(" ", string.Empty);
         }
 
-
-        public static List<char> Supersect(this List<char> a, List<char> b)
+        public static List<char> Supersect(this string str1, string str2)
         {
+            List<char> a = str1.ToCharArray().ToList();
+            List<char> b = str2.ToCharArray().ToList();
             var result = a.Where(b.Remove).ToList();
             return result;
         }
@@ -63,16 +64,12 @@ namespace AnagramHasher.Core
 
                 return sb.ToString();
         }
-
         public static IEnumerable<TSource> ExceptAll<TSource>(
             this IEnumerable<TSource> first,
             IEnumerable<TSource> second)
         {
             return ExceptAll(first, second, null);
         }
-
-        
-
         public static IEnumerable<TSource> ExceptAll<TSource>(
             this IEnumerable<TSource> first,
             IEnumerable<TSource> second,
@@ -137,15 +134,6 @@ namespace AnagramHasher.Core
                     }
                 }
             }
-        }
-        public static void ForEach<T>(this IEnumerable<T> source, Action<T> action)
-        {
-            foreach (var item in source)
-                action(item);
-        }
-        public static void AddRange<TKey, TValue>(this IDictionary<TKey, TValue> dic, IDictionary<TKey, TValue> dicToAdd)
-        {
-            dicToAdd.ForEach(x => dic.Add(x.Key, x.Value));
         }
     }
 }

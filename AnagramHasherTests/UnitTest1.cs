@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using AnagramHasher.Core;
 using NUnit.Framework;
+using NUnit.Framework.Constraints;
 
 namespace AnagramHasherTests
 {
@@ -12,7 +13,13 @@ namespace AnagramHasherTests
 
         private const string pathToDictionary = @"../../../../wordlist.txt";
 
-         [SetUp]
+        private List<string> _dictionary = null;
+
+        private List<string> _anagrams = null;
+
+        private Dictionary<string,string> _permutations = null;
+
+        [SetUp]
         public void Setup()
         {
             Processor = new Processor("poultry outwits ants",
@@ -23,32 +30,40 @@ namespace AnagramHasherTests
                     "665e5bcb0c20062fe8abaaf4628bb154"
                 });
         }
-
-        [Test]
-        public void Test1()
-        {
-            Assert.Pass();
-        }
-
+        
         [Test]
         public void ReadDictionary()
         {
            Assert.IsNotEmpty( Processor.ReadDictionary(pathToDictionary));
         }
 
-        [Test]
+        [Test,Order(1)]
         public void FilterBySymbolsContained()
         {
             var dictionary = Processor.ReadDictionary(pathToDictionary);
-            Assert.False(Processor.FilterBySymbolsContained(dictionary).Any(o => o.Contains("z")));
+            var filtered = Processor.FilterBySymbolsContained(dictionary);
+            Assert.False(filtered.Any(o => o.Contains("z")));
+            _dictionary = filtered.ToList();
         }
 
-        //[Test]
-        //public void GetAnagrams()
-        //{
-        //    var filteredDictionary = Processor.GetFilteredWords(Processor.ReadDictionary(pathToDictionary));
-        //    Processor.GetAnagrams(filteredDictionary);
-        //}
+        [Test, Order(2)]
+        public void GetAnagrams()
+        {
+           //Normally every test should be run in isolation and order shouldn't matter, however since anagram search is quite expensive pragmatism takes over and I am reusing operations.
+           //var filteredDictionary = Processor.GetFilteredWords(Processor.ReadDictionary(pathToDictionary));
+           var anagrams = Processor.GetAnagrams(_dictionary,2);
+           var orderedInput = Processor.AnagramToCompare.WithoutSpaces().ToCharArray().OrderBy(o => o);
+           Assert.True(anagrams.TrueForAll(o=>new string(o.ToCharArray().OrderBy(oo => oo).ToArray()) == new string(orderedInput.ToArray())));
+           _anagrams = anagrams;
+        }
+
+        [Test, Order(3)]
+        public void GetPermutations()
+        {
+            var permutations = Processor.GetPermutationsAndHashes(_anagrams);
+            Assert.True(_anagrams.Count*6 == permutations.Count);
+            _permutations = permutations;
+        }
 
         [Test]
         public void MatchedHashes()

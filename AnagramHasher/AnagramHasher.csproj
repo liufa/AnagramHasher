@@ -5,4 +5,14 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\AnagramHasher.Core\AnagramHasher.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="wordlist.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
